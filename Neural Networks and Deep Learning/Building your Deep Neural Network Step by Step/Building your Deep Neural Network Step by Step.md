@@ -49,12 +49,6 @@ plt.rcParams['image.cmap'] = 'gray'
 np.random.seed(1)
 ```
 
-    /opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
-      warnings.warn('Matplotlib is building the font cache using fc-list. This may take a moment.')
-    /opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
-      warnings.warn('Matplotlib is building the font cache using fc-list. This may take a moment.')
-
-
 ## 2 - Outline of the Assignment
 
 To build your neural network, you will be implementing several "helper functions". These helper functions will be used in the next assignment to build a two-layer neural network and an L-layer neural network. Each small helper function you will implement will have detailed instructions that will walk you through the necessary steps. Here is an outline of this assignment, you will:
@@ -967,6 +961,7 @@ def L_model_backward(AL, Y, caches):
     """
     grads = {}
     L = len(caches) # the number of layers
+    #print(L)
     m = AL.shape[1]
     Y = Y.reshape(AL.shape) # after this line, Y is the same shape as AL
     
@@ -979,7 +974,7 @@ def L_model_backward(AL, Y, caches):
     ### START CODE HERE ### (approx. 2 lines)
     current_cache = caches[-1]
     #print(current_cache)
-    grads["dA" + str(L)],grads["dW" + str(L)], grads["db" + str(L)]= linear_backward(sigmoid_backward(dAL,current_cache[1]),current_cache[0])
+    grads["dA" + str(L)],grads["dW" + str(L)], grads["db" + str(L)] = linear_activation_backward(dAL, current_cache, activation = "sigmoid")
     ### END CODE HERE ###
     
     for l in reversed(range(L-1)):
@@ -987,10 +982,15 @@ def L_model_backward(AL, Y, caches):
         # Inputs: "grads["dA" + str(l + 2)], caches". Outputs: "grads["dA" + str(l + 1)] , grads["dW" + str(l + 1)] , grads["db" + str(l + 1)] 
         ### START CODE HERE ### (approx. 5 lines)
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp = linear_backward(sigmoid_backward(dAL, current_cache[1]),current_cache[0])
+        dA_prev_temp, dW_temp, db_temp = linear_backward(relu_backward(grads["dA" + str(l + 2)], current_cache[1]),current_cache[0])
+        ##dA_prev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(L)], current_cache, activation = "relu")
         grads["dA" + str(l + 1)] = dA_prev_temp
         grads["dW" + str(l + 1)] = dW_temp
         grads["db" + str(l + 1)] = db_temp
+        #print("step: " + str(l))
+        #print("dA : " + str(dA_prev_temp))
+        #print("dW : " + str(dW_temp))
+        #print("db : " + str(db_temp))
         ### END CODE HERE ###
 
     return grads
@@ -1003,12 +1003,12 @@ grads = L_model_backward(AL, Y_assess, caches)
 print_grads(grads)
 ```
 
-    dW1 = [[-0.38142895 -0.05436378 -0.12122851 -0.09345065]
-     [-0.36454443 -0.04886266 -0.11465667 -0.08859687]
-     [-0.36758766 -0.04958047 -0.11573455 -0.08940829]]
-    db1 = [[ 0.13978379]
-     [ 0.12259085]
-     [ 0.12471635]]
+    dW1 = [[ 0.41010002  0.07807203  0.13798444  0.10502167]
+     [ 0.          0.          0.          0.        ]
+     [ 0.05283652  0.01005865  0.01777766  0.0135308 ]]
+    db1 = [[-0.22007063]
+     [ 0.        ]
+     [-0.02835349]]
     dA1 = [[ 0.12913162 -0.44014127]
      [-0.14175655  0.48317296]
      [ 0.01663708 -0.05670698]]
