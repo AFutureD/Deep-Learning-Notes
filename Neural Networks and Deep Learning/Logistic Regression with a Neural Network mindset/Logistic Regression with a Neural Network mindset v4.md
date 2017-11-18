@@ -872,7 +872,7 @@ Congratulations on finishing this assignment. You can use your own image and see
 
 
 ```python
-## START CODE HERE ## (PUT YOUR IMAGE NAME) 
+==~~<!--![## START CODE HERE ## (PUT YOUR IMAGE NAME) 
 my_image = "my_image.jpg"   # change this to the name of your image file 
 ## END CODE HERE ##
 
@@ -884,7 +884,7 @@ my_predicted_image = predict(d["w"], d["b"], my_image)
 
 plt.imshow(image)
 print("y = " + str(np.squeeze(my_predicted_image)) + ", your algorithm predicts a \"" + classes[int(np.squeeze(my_predicted_image)),].decode("utf-8") +  "\" picture.")
-```
+]()-->~~==```
 
     y = 0.0, your algorithm predicts a "non-cat" picture.
 
